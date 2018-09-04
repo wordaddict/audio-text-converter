@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 import recognizeFile from 'watson-speech/speech-to-text/recognize-file';
-import SpeechToTextV1 from 'watson-developer-cloud/speech-to-text/v1';
-import AuthorizationV1 from 'watson-developer-cloud/authorization/v1';
 
 class App extends Component {
   constructor(props) {
@@ -29,19 +27,22 @@ class App extends Component {
     this.getToken = this.getToken.bind(this);
   }
 
-  getToken() {
-    const speechService = new SpeechToTextV1({
-      username: 'f79ab83b-1938-4e8e-bd0f-fb14cad0a63a',
-      password: 'wuf2YOsBzyWv',
-      url: 'https://stream.watsonplatform.net/speech-to-text/api',
+  getToken = async () => {
+    return fetch('/credentials', {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+      },
+    },
+    ).then(response => {
+      if (response.ok) {
+        response.json().then(json => {
+          let token = json.token;
+          this.setState({token})
+        });
+      }
     });
-    let tokenManager = new AuthorizationV1(speechService.getCredentials());
-    tokenManager.getToken((err, token) => {
-      this.setState({token})
-      console.log('token', token);
-      console.log('err', err);
-    });
-  }
+  };
 
   handleFormattedMessage(msg){
     const { formattedMessages } = this.state;
@@ -50,18 +51,15 @@ class App extends Component {
 
   getTranscript(props){
     try {
-      // console.log('I got here', props);
       return props.map(msg => msg.results.map((result, i) => (
         <span key={`result-${msg.result_index + i}`}>{result.alternatives[0].transcript}</span>
       )))
       .reduce((a, b) => a.concat(b), [])
       .map((res, i) => {
       let words = res.props.children;
-      console.log('words', words);
       return words;
     })
   } catch (ex) {
-    console.log(ex);
     return <div>{ex.message}</div>;
   }
   }
@@ -89,12 +87,10 @@ class App extends Component {
   }
 
   playFile() {
-      const token = this.state.token;
-      console.log('token', token);
       const recognizeStream = recognizeFile({
       file: this.state.file,
       url: 'https://stream.watsonplatform.net/speech-to-text/api',
-      token: token,
+      token: this.state.token,
       smart_formatting: true,
       format: true,
       model: 'en-US_BroadbandModel',
@@ -109,19 +105,7 @@ class App extends Component {
   recognizeStream.on('error', function(event) { onEvent('Error:', event); });
   
   recognizeStream.on('close', function(event) { onEvent('Close:', event); });
-  function onEvent(name, event) {
-      // console.log('name', name);
-      // console.log('event', event);
-    };
-  }
-
-  fetchToken() {
-    return fetch('/api/credentials').then((res) => {
-      if (res.status !== 200) {
-        throw new Error('Error retrieving auth token');
-      }
-    })
-      .then(creds => this.setState({ ...creds })).catch((err) => {console.log('err', err)});
+  function onEvent(name, event) {};
   }
 
   handleUploadClick() {

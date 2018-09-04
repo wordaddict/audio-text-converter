@@ -9,11 +9,7 @@ const config = require('./config/config');
 
 const port = process.env.PORT || 3010;
 
-app.get('/api/hello', (req, res) => {
-    res.send({ express: 'Hello From Express' });
-  });
 app.set('view engine', 'jsx');
-app.set('views', './views');
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '/client/build')));

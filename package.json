@@ -6,11 +6,14 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
+  "keywords": [
+    "heroku"
+  ],
   "engines": {
     "node": "10.8.0",
     "npm": "6.2.0"
   },
-  "author": "",
+  "author": "Adeyinka Micheal",
   "license": "ISC",
   "description": "",
   "dependencies": {

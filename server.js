@@ -16,12 +16,11 @@ app.set('view engine', 'jsx');
 app.set('views', './views');
 
 if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, '/../client/build')));
+    app.use(express.static(path.join(__dirname, '/client/build')));
     app.get('/', function(req, res) {
-      res.sendFile(path.join(__dirname, '/../client/build', 'index.html'));
+      res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
     });
 }
-
 app.get('/credentials', (req, res, next) => {
     const speechService = new SpeechToTextV1({
         username: config.username,

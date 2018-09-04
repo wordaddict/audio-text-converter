@@ -7,6 +7,7 @@ const SpeechToTextV1 = require('watson-developer-cloud/speech-to-text/v1');
 const AuthorizationV1 = require('watson-developer-cloud/authorization/v1');
 const config = require('./config/config');
 
+
 const port = process.env.PORT || 3010;
 
 app.set('view engine', 'jsx');

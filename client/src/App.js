@@ -129,16 +129,16 @@ class App extends Component {
       <div className="App">
           <div className="container">  
             <form id="contact" action='http://localhost:3005/audio' encType="multipart/form-data" method="post">
-                <h1>Audio converter to text</h1>
+                <h1 className="header__text">Audio converter to text</h1>
                 <div>
-                  <label htmlFor="file">Choose audio to upload</label>
+                  <label htmlFor="file">Choose audio to upload</label> <br/>
                   <input type="file" id="file" name="file" onChange={ (e) => this.handleChange(e) } />
                 </div>
-                <fieldset>
-                  <button name="submit" type="button" id="contact-submit" data-submit="...Sending" value='submit'onClick={this.handleUploadClick}>
+              
+                  <button className="contact-submit" name="submit" type="button" id="contact-submit" data-submit="...Sending" value='submit'onClick={this.handleUploadClick}>
                     Upload Audio File
                   </button>
-                </fieldset>
+    
             </form>
         </div>
         <div id="message-area">
